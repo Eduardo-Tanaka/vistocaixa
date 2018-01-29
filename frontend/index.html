@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>VistoCaixa</title>
+	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+	
+	<!-- Latest compiled and minified CSS -->
+	<link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+	<link href="node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+	<link href="vendor/jquery-animate-js/Dist/jquery.animate.min.css" rel="stylesheet" type="text/css" />
+	<link href="vendor/main.css" rel="stylesheet" type="text/css" />
+	<link href="node_modules/toastr/build/toastr.min.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+	<nav class="navbar navbar-inverse">
+		<div class="container-fluid">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#">Visto Caixa</a>
+			</div>
+
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="#" data-toggle="modal" data-target="#myModal">Cadastrar</a></li>
+				</ul>
+			</div><!-- /.navbar-collapse -->
+		</div><!-- /.container-fluid -->
+	</nav>
+	
+	<div class="container">
+		<div class="text-center">			
+			<h1 id="title" style="font-size:70px;color:#044368" class="logo-lg">Visto CAIXA<small id="title-desc" style="margin-left:50px;font-size:19px;opacity:0;color:#044368b3">Temática Digital</small></h1>
+		</div>		
+		<div class="main-login">		
+			<div class="login-box">
+				<div class="text-center">
+					<h3 class="login-bg">Login</h3>
+				</div>
+				<div class="login-form">
+					<form id="form-login" method="post">
+						<div class="form-group">
+							<label for="login-email">EMAIL</label>
+							<div class="input-group">
+								<span class="input-group-addon" id="basic-addon-login-email"><i class="fa fa-envelope" aria-hidden="true"></i></span>
+								<input name="email" type="text" class="form-control" placeholder="Digite seu email" aria-describedby="basic-addon-login-email" id="login-email" data-validation="required email">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="login-senha">SENHA</label>
+							<div class="input-group">
+								<span class="input-group-addon" id="basic-addon-login-senha"><i class="fa fa-lock" aria-hidden="true"></i></span>
+								<input name="password" type="password" class="form-control" placeholder="Digite sua senha" aria-describedby="basic-addon-login-senha" id="login-senha" data-validation="required">
+							</div>
+						</div>
+						<div>
+							<button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Cadastrar</button>
+							<button id="btn-submit" type="submit" class="btn btn-primary pull-right" style="width:100px">Enviar</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div><!-- container -->
+	
+	<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel">Cadastro</h4>
+				</div>
+				<form id="form-cadastro" method="post">
+					<div class="modal-body">
+						<div class="form-group">
+							<label for="cadastro-nome">NOME</label>
+							<div class="input-group">
+								<span class="input-group-addon" id="basic-addon-cadastro-nome"><i class="fa fa-user" aria-hidden="true"></i></span>
+								<input name="username" type="text" class="form-control" placeholder="Digite seu nome" aria-describedby="basic-addon-cadastro-nome" id="cadastro-nome" data-validation="required">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="cadastro-email">EMAIL</label>
+							<div class="input-group">
+								<span class="input-group-addon" id="basic-addon-cadastro-email"><i class="fa fa-envelope" aria-hidden="true"></i></span>
+								<input name="email" type="text" class="form-control" placeholder="Digite seu email" aria-describedby="basic-addon-cadastro-email" id="cadastro-email" data-validation="required email">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="cadastro-senha">SENHA</label>
+							<div class="input-group">
+								<span class="input-group-addon" id="basic-addon-cadastro-senha"><i class="fa fa-lock" aria-hidden="true"></i></span>
+								<input name="password" type="password" class="form-control" placeholder="Digite sua senha" aria-describedby="basic-addon-cadastro-senha" id="cadastro-senha" 
+									data-validation="length" 
+									data-validation-length="6-32"
+									data-validation-error-msg="A senha deve ter entre 6-32 caracteres" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="cadastro-conf-senha">CONFIRMAÇÃO SENHA</label>
+							<div class="input-group">
+								<span class="input-group-addon" id="basic-addon-cadastro-conf-senha"><i class="fa fa-lock" aria-hidden="true"></i></span>
+								<input name="conf-password" type="password" class="form-control" placeholder="Digite sua senha" aria-describedby="basic-addon-cadastro-conf-senha" id="cadastro-conf-senha" 
+									data-validation="confirmation" 
+									data-validation-confirm="password"
+									data-validation-error-msg="As senha são diferentes" />
+							</div>
+						</div>								
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+						<button type="submit" class="btn btn-primary">Enviar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+	<script src="node_modules/jquery/dist/jquery.min.js"></script>
+	<script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="vendor/jquery-animate-js/Dist/jquery.animate.min.js"></script>
+	<script src="node_modules/jquery-form-validator/form-validator/jquery.form-validator.min.js"></script>
+	<script src="node_modules/toastr/build/toastr.min.js"></script>
+	
+	<script>
+		$("#title").doAnim("lightSpeedIn", (e) => {
+			$("#title-desc").css("opacity", "1")
+			$("#title-desc").doAnim("flipInX")
+		});
+		$(".main-login").doAnim("slideInDown");
+		
+		// valida os dados do formulário
+		$.validate({
+			modules : 'security',
+		  	lang : 'pt'
+		});
+		
+		$("#form-login").on("submit", (e) => {
+			e.preventDefault();
+			if(!$('#form-login').isValid()){
+				toastr.error('Dados incorretos, por favor preencha os dados corretamente!', 'ERRO!')
+				return false;
+			} else {
+				const body = {
+					email:	  $("#login-email").val(),
+					password: $("#login-senha").val(),
+				}
+				$(".btn-primary").prop("disabled", true);
+				$(".btn-primary").html("Enviar <i class='fa fa-spinner fa-spin fa-fw'></i>");
+				$.ajax({
+					url: 'http://localhost:8888/auth/login',
+					type: 'POST',
+					contentType: 'application/json',
+					data: JSON.stringify(body)
+				}).done(function(data){	
+					console.log(data);
+					localStorage.setItem("jwt", data);
+					window.location.replace("tarefas.html"); // redireciona para a página
+				}).fail(function(jqXHR, textStatus, errorThrown){
+					toastr.error("Usuário ou senha inválidos", "ERRO LOGIN");
+				}).always(() => {
+					$(".btn-primary").prop("disabled", false);
+					$(".btn-primary").html("Enviar");
+				});
+			}
+		});
+		
+		// Cadastro de usuário
+		$("#form-cadastro").on("submit", (e) => {
+			e.preventDefault();
+			if(!$('#form-cadastro').isValid()){
+				toastr.error('Dados incorretos, por favor preencha os dados corretamente!', 'ERRO!')
+				return false;
+			} else {
+				const body = {
+					email:	  $("#cadastro-email").val(),
+					password: $("#cadastro-senha").val(),
+					username: $("#cadastro-nome").val()
+				}
+				$(".btn-primary").prop("disabled", true);
+				$(".btn-primary").html("Enviar <i class='fa fa-spinner fa-spin fa-fw'></i>");
+				$.ajax({
+					url: 'http://localhost:8888/auth/register',
+					type: 'POST',
+					contentType: 'application/json',
+					data: JSON.stringify(body)
+				}).done((data) => {	
+					console.log(data);
+					toastr.success("Usuário cadastrado com sucesso", "OK");
+					$("#myModal").modal('hide');
+				}).fail((jqXHR, textStatus, errorThrown) => {
+					toastr.error("Ocorreu um erro ao cadastrar o usuário", "ERRO CADASTRAMENTO");
+				}).always(() => {
+					$(".btn-primary").prop("disabled", false);
+					$(".btn-primary").html("Enviar");
+				});
+			}
+		});
+	</script>
+</body>
+</html>

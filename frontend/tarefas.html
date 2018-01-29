@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Visto Caixa</title>
+	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+	
+	<!-- Latest compiled and minified CSS -->
+	<link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+	<link href="node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+	<link href="vendor/jquery-animate-js/Dist/jquery.animate.min.css" rel="stylesheet" type="text/css" />
+	<link href="vendor/main.css" rel="stylesheet" type="text/css" />
+	<link href="node_modules/toastr/build/toastr.min.css" rel="stylesheet" type="text/css" />
+	<link href="node_modules/@fengyuanchen/datepicker/dist/datepicker.min.css" rel="stylesheet" type="text/css" />
+	<link href="node_modules/jquery-easy-loading/dist/jquery.loading.min.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+	<nav class="navbar navbar-inverse">
+		<div class="container-fluid">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#">Visto Caixa</a>
+			</div>
+
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+				<ul class="nav navbar-nav navbar-right">
+					<li>
+						<form class="navbar-form">
+					        <div class="form-group">
+					        	<input type="text" class="form-control" placeholder="titulo ou descrição">
+					        </div>
+					        <button type="submit" class="btn btn-default">Procurar</button>
+					    </form>
+				  	</li>
+					<li><a href="#" id="sair">Sair</a></li>
+				</ul>
+			</div><!-- /.navbar-collapse -->
+		</div><!-- /.container-fluid -->
+	</nav>
+	
+	<div class="container">
+		<p class="lead">Bem vindo, nome da pessoa... ,aqui está sua lista de tarefas <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#myModal">adicionar tarefa <i class="fa fa-plus" aria-hidden="true"></i></button></p>
+
+        <div id="lista-tarefas"></div>        
+	</div>
+
+	<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel">Nova Tarefa</h4>
+				</div>
+				<form id="form-tarefa" method="post">
+					<div class="modal-body">
+						<div class="form-group">
+							<label for="novo-titulo">TÍTULO</label>
+							<div class="input-group">
+								<span class="input-group-addon" id="basic-addon-titulo"><i class="fa fa-envelope-o" aria-hidden="true"></i></span>
+								<input name="title" type="text" class="form-control" placeholder="Digite o título da tarefa" aria-describedby="basic-addon-titulo" id="novo-titulo" data-validation="required" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="novo-descricao">DESCRIÇÃO</label>
+							<div class="input-group">
+								<span class="input-group-addon" id="basic-addon-descricao"><i class="fa fa-newspaper-o" aria-hidden="true"></i></span>
+								<textarea name="description" type="text" class="form-control" placeholder="Digite a descrição da tarefa" aria-describedby="basic-addon-descricao" id="novo-descricao" data-validation="required"></textarea>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="novo-data">DATA DE EXECUÇÃO</label>
+							<div class="input-group">
+								<span class="input-group-addon" id="basic-addon-data"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+								<input name="data" type="text" class="form-control" placeholder="Digite a data de execução da tarefa" aria-describedby="basic-addon-data" id="novo-data" data-validation="required" />
+							</div>
+						</div>							
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+						<button type="submit" class="btn btn-primary">Enviar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal -->
+	<div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="modalDeleteLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="modalDeleteLabel">Deletar Tarefa</h4>
+				</div>
+				<form id="form-delete" method="post">
+					<input type="hidden" id="delete-id" name="id" />
+					<div class="modal-body">
+						Deseja deletar essa tarefa?				
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+						<button type="submit" class="btn btn-primary">Enviar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal -->
+	<div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="modalEditLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="modalEditLabel">Editar Tarefa</h4>
+				</div>
+				<form id="form-edit" method="post">
+					<input type="hidden" id="edit-id" name="id" />
+					<div class="modal-body">
+						<div class="form-group">
+							<label for="edit-titulo">TÍTULO</label>
+							<div class="input-group">
+								<span class="input-group-addon" id="basic-addon-edit-titulo"><i class="fa fa-envelope-o" aria-hidden="true"></i></span>
+								<input name="titulo" type="text" class="form-control" placeholder="Digite o título da tarefa" aria-describedby="basic-addon-edit-titulo" id="edit-titulo" data-validation="required" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="edit-descricao">DESCRIÇÃO</label>
+							<div class="input-group">
+								<span class="input-group-addon" id="basic-addon-edit-descricao"><i class="fa fa-newspaper-o" aria-hidden="true"></i></span>
+								<textarea name="descricao" type="text" class="form-control" placeholder="Digite a descrição da tarefa" aria-describedby="basic-addon-edit-descricao" id="edit-descricao" data-validation="required"></textarea>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="edit-data">DATA DE EXECUÇÃO</label>
+							<div class="input-group">
+								<span class="input-group-addon" id="basic-addon-edit-data"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+								<input name="data" type="text" class="form-control" placeholder="Digite a data de execução da tarefa" aria-describedby="basic-addon-edit-data" id="edit-data" data-validation="required" />
+							</div>
+						</div>							
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+						<button type="submit" class="btn btn-primary">Enviar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	 <!-- template para exibir as tarefas -->
+	<script id="template-tarefa" type="text/x-handlebars-template">
+		{{#each tarefas}}
+			<div class="col-md-4">
+	          	<div class="box box-success direct-chat direct-chat-success">
+	            	<div class="box-header with-border">
+	             		<h3 class="box-title">
+	             			<i class="fa fa-calendar" aria-hidden="true"></i> {{data}} - {{titulo}} 
+						</h3>
+
+	              		<div class="box-tools pull-right">
+			                <button type="button" class="btn btn-box-tool edit" value={{id}} data-titulo={{titulo}} data-descricao={{descricao}} data-data={{data}}>
+			                  	<i class="fa fa-pencil"></i>
+			                </button>
+			                <button type="button" class="btn btn-box-tool delete" value={{id}}>
+			                	<i class="fa fa-trash"></i>
+			                </button>
+			            </div>
+	            	</div>
+	            	<!-- /.box-header -->
+	            	<div class="box-body">
+	              		<div class="direct-chat-messages">
+	                  		<div class="direct-chat-text">
+	                    		{{descricao}}
+	                  		</div>
+	                	</div>
+	          		</div>
+	        	</div>
+	        </div>
+	    {{/each}}
+	</script>
+
+	<script src="node_modules/jquery/dist/jquery.min.js"></script>
+	<script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="vendor/jquery-animate-js/Dist/jquery.animate.min.js"></script>
+	<script src="node_modules/jquery-form-validator/form-validator/jquery.form-validator.min.js"></script>
+	<script src="node_modules/toastr/build/toastr.min.js"></script>
+	<script src="node_modules/handlebars/dist/handlebars.min.js"></script>
+	<script src="node_modules/@fengyuanchen/datepicker/dist/datepicker.min.js"></script>
+	<script src="node_modules/inputmask/dist/jquery.inputmask.bundle.js"></script>
+	<script src="node_modules/jquery-easy-loading/dist/jquery.loading.min.js"></script>
+
+	<script>
+		$(document).ready(() => {
+			// ao clicar em sair remove o token do localStorage e redireciona para a página de login
+			$("#sair").on("click", () =>{
+				localStorage.removeItem("jwt");
+				window.location.replace("index.html"); // redireciona para a página
+			});
+
+			// loading para carregar as tarefas
+			$("body").loading({
+				theme: 'dark',
+	            message: "<i class='fa fa-spinner fa-spin fa-2x fa-fw'></i> Carregando Tarefas..."
+	        });
+
+			// valida os dados do formulário
+			$.validate({
+			  	lang : 'pt'
+			});
+
+			// requisição para pegar as tarefas da pessoa
+			$.ajax({
+				url: 'http://localhost:8888/api/tarefas',
+				method: 'GET',
+				headers: {
+					"Authorization": "Bearer " + localStorage.getItem("jwt"),
+					"Content-Type": "",
+					'Accept': 'application/json'
+				},
+			}).done(function(data) {	
+				console.log(data);
+			}).fail(function(jqXHR, textStatus, errorThrown) {
+				console.log(jqXHR)
+				console.log(textStatus)
+				console.log(errorThrown)
+				console.log(localStorage.getItem("jwt"))
+				toastr.error("Não foi possível pegar as tarefas", "ERRO TAREFA");
+			}).always(() => {
+				// retira o loading ao carregar as tarefas
+				$("body").loading('stop');
+			});
+
+			const source   = $("#template-tarefa").html();
+		    const template = Handlebars.compile(source);
+			// mock data
+		    var context = {
+			  	tarefas: [
+				  	{
+				  		id: 1,
+			    		data: '10/10/2010',
+			    		titulo: 'titulo1',
+			    		descricao: 'desc1'
+			    	},
+			    	{
+			    		id: 2,
+			    		data: '10/09/2010',
+			    		titulo: 'titulo2',
+			    		descricao: 'desc2'
+			    	},
+			    	{
+			    		id: 3,
+			    		data: '20/01/2010',
+			    		titulo: 'titulo3',
+			    		descricao: 'desc3'
+			    	}
+			    ]
+			};
+
+		    $("#lista-tarefas").append(template(context));
+
+		    $('#novo-data').inputmask("99/99/9999");
+		    $('#novo-data').datepicker({
+		    	autoHide: true,
+			    language: 'pt-BR',
+			    format: 'dd/mm/yyyy',
+				startDate: new Date(),
+		    });
+
+		    $("#form-tarefa").on("submit", function(e) {
+		    	e.preventDefault();
+		    	if(!$('#form-tarefa').isValid()){
+					toastr.error('Dados incorretos, por favor preencha os dados corretamente!', 'ERRO!')
+					return false;
+				} else {
+					const body = {
+						title:	  	 $("#novo-titulo").val(),
+						description: $("#novo-descricao").val(),
+						data: 		 $("#novo-data").val()
+					}
+					$(".btn-primary").prop("disabled", true);
+					$(".btn-primary").html("Enviar <i class='fa fa-spinner fa-spin fa-fw'></i>");
+					$.ajax({
+						url: 'http://localhost:8888/api/tarefa',
+						method: 'POST',
+						contentType: 'application/json',
+						data: JSON.stringify(body),
+						headers: {
+							"Authorization": "Bearer " + localStorage.getItem("jwt"),
+						},
+					}).done(function(data){	
+						console.log(data);
+						window.reload();
+					}).fail(function(jqXHR, textStatus, errorThrown){
+						toastr.error("Não foi possível adicionar a tarefa", "ERRO TAREFA");
+					}).always(() => {
+						$(".btn-primary").prop("disabled", false);
+						$(".btn-primary").html("Enviar");
+					});
+				}
+		    });
+
+		    $(".delete").on("click", function() {
+		    	$("#delete-id").val($(this).val());
+		    	$("#modalDelete").modal();
+		    });
+
+		    $("#form-delete").on("submit", function(e) {
+		    	e.preventDefault();
+		    	const body = {
+					id:	$("#delete-id").val(),
+				}
+		    	$(".btn-primary").prop("disabled", true);
+				$(".btn-primary").html("Enviar <i class='fa fa-spinner fa-spin fa-fw'></i>");
+				$.ajax({
+					url: 'http://localhost:8888/api/tarefa',
+					method: 'DELETE',
+					contentType: 'application/json',
+					data: JSON.stringify(body)
+				}).done(function(data){	
+					console.log(data);
+					window.reload();
+				}).fail(function(jqXHR, textStatus, errorThrown){
+					toastr.error("Não foi possível deletar a tarefa", "ERRO TAREFA");
+				}).always(() => {
+					$(".btn-primary").prop("disabled", false);
+					$(".btn-primary").html("Enviar");
+				});
+		    });
+
+		    $(".edit").on("click", function() {
+		    	$("#edit-id").val($(this).val());
+		    	$("#edit-titulo").val($(this)[0].dataset.titulo);
+		    	$("#edit-descricao").val($(this)[0].dataset.descricao);
+		    	$("#edit-data").val($(this)[0].dataset.data);
+		    	$("#modalEdit").modal();
+		    });
+
+		    $("#form-edit").on("submit", function(e) {
+		    	e.preventDefault();
+		    	if(!$('#form-edit').isValid()){
+					toastr.error('Dados incorretos, por favor preencha os dados corretamente!', 'ERRO!')
+					return false;
+				} else {
+					const body = {
+						title:	  	 $("#edit-titulo").val(),
+						description: $("#edit-descricao").val(),
+						data: 		 $("#edit-data").val()
+					}
+					$(".btn-primary").prop("disabled", true);
+					$(".btn-primary").html("Enviar <i class='fa fa-spinner fa-spin fa-fw'></i>");
+					$.ajax({
+						url: 'http://localhost:8888/api/tarefa',
+						method: 'PUT',
+						contentType: 'application/json',
+						data: JSON.stringify(body)
+					}).done(function(data){	
+						console.log(data);
+						window.reload();
+					}).fail(function(jqXHR, textStatus, errorThrown){
+						toastr.error("Não foi possível editar a tarefa", "ERRO TAREFA");
+					}).always(() => {
+						$(".btn-primary").prop("disabled", false);
+						$(".btn-primary").html("Enviar");
+					});
+				}
+		    });
+		})	
+	</script>
+</body>
+</html>
